@@ -1,4 +1,7 @@
 import yfinance as yf
+from colorama import Fore, Style, init
+
+init(autoreset=True)
 
 def get_quote(symbol):
     ticker = yf.Ticker(symbol)
@@ -20,8 +23,24 @@ def main():
             print("Market: {}".format(info['market']))
             print("Exchange: {}".format(info['exchange']))
             print("Currency: {}".format(info['currency']))
-            print("Current Price: {}".format(info['regularMarketPrice']))
-            print("Previous Close: {}\n".format(info['regularMarketPreviousClose']))
+            
+            current_price = info['regularMarketPrice']
+            previous_close = info['regularMarketPreviousClose']
+            
+            
+            if current_price > previous_close:
+                price_color = Fore.GREEN
+            elif current_price < previous_close:
+                price_color = Fore.RED
+            else:
+                price_color = Fore.WHITE
+
+            print("Current Price: {}{}".format(price_color, current_price))
+            print("Previous Close: {}".format(previous_close))
+
+            
+        
+
         except Exception as e:
             print("Error: Unable to fetch quote for {}. Please try again with a valid symbol.\n".format(symbol.upper()))
 
